@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+        <body ng-app="app">
+<!--            <h1>Game of Thrones Quiz</h1>    
+            <h2>Can you remember who's alive?!</h2>-->
+<!--            <nav>
+                <a ui-sref="first">Start Quiz</a>
+                <a ui-sref="second">Second Link</a>
+                <a ui-sref="third">Third Link</a>
+            </nav>-->
+
+            <!--<a ui-sref="first" id="first_a">Start Quiz</a>-->
+            <ui-view></ui-view>
+
+        <script type="text/javascript" src="angular.min.js"></script>
+        <script type="text/javascript" src="ui-router.min.js"></script>
+        <script>
+            var app = angular.module('app',['ui.router']);
+            
+//            app.controller('ctrl',function($http){
+//                
+//            });
+            
+            app.config(function($stateProvider){
+                var homePage = {
+                    name: 'homepage',
+                    url : '',
+                    template: '<h1>Game of Thrones Quiz</h1>\n\
+                               <a ui-sref="first" id="first_a">Start Quiz</a>'
+                };
+                
+                var firstQuestion = {
+                    name: 'first',
+                    url: '/first',
+                    template: '<h2>Can you remember who\'s alive?!</h2><img src="first.webp">\n\
+                               <label>dead<input type="radio" name="life" value="dead"></label>\n\
+                               <label>alive<input type="radio" name="life" value="alive"></label>\n\
+                               <a ui-sref="second">Second Question</a>',
+                    controller: function () {
+//                            document.getElementById('first_a').remove();
+//                        var a = document.getElementById('first_a');
+//                        console.log(a);
+                    }
+                };
+                var secondQuestion = {
+                    name: 'second',
+                    url: '/second',
+                    template: '<img src="second.webp">\n\
+                                <label>dead<input type="radio" name="life" value="dead"></label>\n\
+                                <label>alive<input type="radio" name="life" value="alive"></label>\n\
+                                <a ui-sref="third">third Question</a>'
+                };
+
+                var thirdQuestion = {
+                    name: 'third',
+                    url: '/third',
+                    template: '<img src="third.webp">\n\
+                                <label>dead<input type="radio" name="life" value="dead"></label>\n\
+                                <label>alive<input type="radio" name="life" value="alive"></label>\n\
+                                <a ui-sref="results">Results</a>'
+//                    component: 'third'
+                };
+                
+                var results = {
+                    name: 'results',
+                    url: '/results',
+                    template: '<h3>Congrats</h3>\n\
+                               <a ui-sref="homepage">Back to home page</a>'
+//                    component: 'third'
+                };
+                
+
+                $stateProvider.state(firstQuestion);
+                $stateProvider.state(secondQuestion);
+                $stateProvider.state(thirdQuestion);
+                $stateProvider.state(results);
+                $stateProvider.state(homePage);
+            });
+
+            app.component('third', {
+                template: '<h2>{{third.greeting}}</h2>',
+                controller: function (external) {
+//                    this.greeting = "Third Hello World!!";
+                    external().then(function (data) {
+                        console.log(data.data);
+                    });
+                },
+
+                controllerAs: 'third'
+            });
+
+            app.service('external', function ($http) {
+                return function () {
+                    return $http.get('third.html');
+                };
+            });
+        </script>
+    </body>
+</html>
